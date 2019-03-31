@@ -2,9 +2,13 @@
 //arguments : key
 //return : 16 permuted keys
 
-const hex_to_binary_string = require("./hextobinarystring");
+const hex_to_binary_string = require("../conversions/hextobinarystring");
 const rotate_left = require("./rotate_left");
-const { PC_box_1_left, PC_box_1_right, PC_box_2 } = require("../dependencies");
+const {
+	PC_box_1_left,
+	PC_box_1_right,
+	PC_box_2
+} = require("../../dependencies");
 const permute = require("./permute");
 const PC = PC_box_1_left.concat(PC_box_1_right);
 

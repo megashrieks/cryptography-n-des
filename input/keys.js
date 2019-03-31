@@ -6,9 +6,9 @@
 module.exports = [
 	//genuine 64 bit key in hexadecimal
 	"133457799BBCDFF1",
-	"abcdef",
-	"ghijkl",
-	"mnopqr",
-	"stuvwx",
-	"yzabcd"
+	"457379193BBFF1CD",
+	"13399BBCD4577FF1",
+	"799BBCDF133457F1",
+	"19BBCD3345779FF1",
+	"1BCD3379B4579FF1"
 ];

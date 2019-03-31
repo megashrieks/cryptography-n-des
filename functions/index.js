@@ -1,3 +1,3 @@
-const DES = require("./DES");
+const DES = require("./DES/DES");
 
 module.exports = { DES };

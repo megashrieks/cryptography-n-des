@@ -6,9 +6,9 @@
 
 const permute = require("./permute");
 const bit_string_xor = require("./bit_string_xor");
-const string_to_no = require("./string_to_no");
-const no_to_string = require("./no_to_string");
-const { expansion_function, permutation } = require("../dependencies");
+const string_to_no = require("../conversions/string_to_no");
+const no_to_string = require("../conversions/no_to_string");
+const { expansion_function, permutation } = require("../../dependencies");
 
 const split_to_blocks = bit_string => {
 	let result = [];

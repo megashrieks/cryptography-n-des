@@ -1,12 +1,14 @@
-const hex_to_binary_string = require("./hextobinarystring");
+const hex_to_binary_string = require("../conversions/hextobinarystring");
 const permute = require("./permute");
 const bit_string_xor = require("./bit_string_xor");
 const process_fn = require("./process_fn");
 const keygen = require("./keygen");
-const binary_to_hex = require("./binary_to_hex");
-const { initial_permutation, final_permutation } = require("../dependencies");
-const SBOX = require("../input/sboxes");
-const DES = ({ key, message, enc }) => {
+const binary_to_hex = require("../conversions/binary_to_hex");
+const {
+	initial_permutation,
+	final_permutation
+} = require("../../dependencies");
+const DES = ({ key, message, enc, SBOX }) => {
 	const binary_message = hex_to_binary_string(message).join("");
 	const keys = keygen(key, enc);
 	const message_ip = permute(initial_permutation, binary_message);
@@ -27,12 +29,4 @@ const DES = ({ key, message, enc }) => {
 	}
 	return result;
 };
-console.log(
-	DES({
-		key: "133457799BBCDFF1",
-		message: "0123456789ABCDEF",
-		enc: 1
-	})
-);
-
-module.export = DES;
+module.exports = DES;
