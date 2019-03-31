@@ -3,6 +3,7 @@ const permute = require("./permute");
 const bit_string_xor = require("./bit_string_xor");
 const process_fn = require("./process_fn");
 const keygen = require("./keygen");
+const binary_to_hex = require("./binary_to_hex");
 const { initial_permutation, final_permutation } = require("../dependencies");
 const SBOX = require("../input/sboxes");
 const DES = ({ key, message }) => {
@@ -20,7 +21,13 @@ const DES = ({ key, message }) => {
 		l = r;
 		r = bit_string_xor(temp, process_fn(r, keys[key_count++], SBOX));
 	}
-	return permute(final_permutation, r + l);
+	let final_permuted = permute(final_permutation, r + l);
+	const final_len = final_permuted.length;
+	let result = "";
+	for (let i = 0; i < final_len; i += 4) {
+		result += binary_to_hex(final_permuted.substr(i, 4));
+	}
+	return result;
 };
 console.log(
 	DES({
