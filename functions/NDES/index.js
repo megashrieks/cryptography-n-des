@@ -5,33 +5,61 @@
 
 const split_and_padd = require("./split_and_padd");
 const DES = require("../DES/DES");
-const NDES = ({ message, keys, SBOXES, enc }) => {
+const reverse = arr => {
+	const len = arr.length;
+	for (let i = 0; i < len; ++i) arr = [arr.pop()].concat(arr);
+	return arr;
+};
+const NDES = ({ message, key, SBOXES, enc }) => {
 	let transformed = split_and_padd(message);
-	let turns = keys.length;
-	turns += !(turns & 1);
-	for (let i = 0; i < turns; ++i) {
-		for (let j in transformed) {
-			transformed[j] = DES({
-				message: transformed.join(""),
-				key: keys[i % keys.length],
-				SBOX: SBOXES,
-				enc: (i + enc) & 1
-			});
-		}
+	for (let j in transformed) {
+		transformed[j] = DES({
+			message: transformed[j],
+			key: key,
+			SBOX: SBOXES,
+			enc: enc
+		});
 	}
 	return transformed.join("");
 };
-let res = NDES({
-	message: "1234567890ABCDEF",
-	keys: ["133457799BBCDFF1", "1399BBC34577DFF1"],
-	SBOXES: require("../../input/sboxes"),
-	enc: 1
+const keys = ["1399BB577DF1FC34", "7D34F1F1399BB57C", "1F1399BB577D34FC"];
+const message = "0123456789ABCDEF";
+const encrypt = ({ message, keys, SBOXES }) => {
+	let res = message;
+	if (!(keys.length & 1)) keys.push(keys[0]);
+	for (let i = 0; i < keys.length; ++i) {
+		res = NDES({
+			message: res,
+			key: keys[i],
+			SBOXES,
+			enc: (i + 1) & 1
+		});
+	}
+	return res;
+};
+const decrypt = ({ message, keys, SBOXES }) => {
+	let res = message;
+	if (!(keys.length & 1)) keys.push(keys[0]);
+	for (let i = 0; i < keys.length; ++i) {
+		res = NDES({
+			message: res,
+			key: keys[keys.length - i - 1],
+			SBOXES,
+			enc: i & 1
+		});
+	}
+	return res;
+};
+let res = encrypt({
+	message,
+	keys,
+	SBOXES: require("../../input/sboxes")
 });
-let test = NDES({
+console.log("once");
+let test = decrypt({
 	message: res,
-	keys: ["133457799BBCDFF1", "1399BBC34577DFF1"],
-	SBOXES: require("../../input/sboxes"),
-	enc: 0
+	keys,
+	SBOXES: require("../../input/sboxes")
 });
 console.log(res, test);
-console.log(test == "1234567890ABCDEF");
+console.log(test == "0123456789ABCDEF");
