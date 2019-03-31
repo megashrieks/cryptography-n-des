@@ -6,16 +6,14 @@ const keygen = require("./keygen");
 const binary_to_hex = require("./binary_to_hex");
 const { initial_permutation, final_permutation } = require("../dependencies");
 const SBOX = require("../input/sboxes");
-const DES = ({ key, message }) => {
+const DES = ({ key, message, enc }) => {
 	const binary_message = hex_to_binary_string(message).join("");
-	const keys = keygen(key);
+	const keys = keygen(key, enc);
 	const message_ip = permute(initial_permutation, binary_message);
 	const message_ip_len = message_ip.length;
 	let key_count = 0;
-	let message_ip_left = message_ip.substr(0, message_ip_len / 2);
-	let message_ip_right = message_ip.substr(message_ip_len / 2);
-	let l = message_ip_left,
-		r = message_ip_right;
+	let l = message_ip.substr(0, message_ip_len / 2),
+		r = message_ip.substr(message_ip_len / 2);
 	for (let i = 0; i < 16; ++i) {
 		let temp = l;
 		l = r;
@@ -32,7 +30,8 @@ const DES = ({ key, message }) => {
 console.log(
 	DES({
 		key: "133457799BBCDFF1",
-		message: "0123456789ABCDEF"
+		message: "0123456789ABCDEF",
+		enc: 1
 	})
 );
 

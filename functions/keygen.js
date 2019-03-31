@@ -8,7 +8,7 @@ const { PC_box_1_left, PC_box_1_right, PC_box_2 } = require("../dependencies");
 const permute = require("./permute");
 const PC = PC_box_1_left.concat(PC_box_1_right);
 
-const keygen = key => {
+const keygen = (key, enc) => {
 	const binary_key = hex_to_binary_string(key).join("");
 	const p_key = permute(PC, binary_key);
 	const p_key_len = p_key.length;
@@ -19,7 +19,8 @@ const keygen = key => {
 	for (let i = 0; i < 16; ++i) {
 		left = rotate_left(rotate_schedule[i], left);
 		right = rotate_left(rotate_schedule[i], right);
-		keys.push(permute(PC_box_2, left + right));
+		if (enc) keys.push(permute(PC_box_2, left + right));
+		else keys = [permute(PC_box_2, left + right)].concat(keys);
 	}
 	return keys;
 };
