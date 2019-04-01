@@ -2,7 +2,7 @@
 //arguments : key
 //return : 16 permuted keys
 
-const hex_to_binary_string = require("../conversions/hextobinarystring");
+const hex_to_binary = require("../conversions/hex_to_binary");
 const rotate_left = require("./rotate_left");
 const {
 	PC_box_1_left,
@@ -13,7 +13,7 @@ const permute = require("./permute");
 const PC = PC_box_1_left.concat(PC_box_1_right);
 
 const keygen = (key, enc) => {
-	const binary_key = hex_to_binary_string(key).join("");
+	const binary_key = hex_to_binary(key).join("");
 	const p_key = permute(PC, binary_key);
 	const p_key_len = p_key.length;
 	let left = p_key.substr(0, p_key_len / 2);

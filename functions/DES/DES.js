@@ -1,4 +1,4 @@
-const hex_to_binary_string = require("../conversions/hextobinarystring");
+const hex_to_binary = require("../conversions/hex_to_binary");
 const permute = require("./permute");
 const bit_string_xor = require("./bit_string_xor");
 const process_fn = require("./process_fn");
@@ -9,7 +9,7 @@ const {
 	final_permutation
 } = require("../../dependencies");
 const DES = ({ key, message, enc, SBOX }) => {
-	const binary_message = hex_to_binary_string(message).join("");
+	const binary_message = hex_to_binary(message).join("");
 	const keys = keygen(key, enc);
 	const message_ip = permute(initial_permutation, binary_message);
 	const message_ip_len = message_ip.length;

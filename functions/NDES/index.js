@@ -5,11 +5,7 @@
 
 const split_and_padd = require("./split_and_padd");
 const DES = require("../DES/DES");
-const reverse = arr => {
-	const len = arr.length;
-	for (let i = 0; i < len; ++i) arr = [arr.pop()].concat(arr);
-	return arr;
-};
+const permute_sbox = require("./permute_sbox");
 const NDES = ({ message, key, SBOXES, enc }) => {
 	let transformed = split_and_padd(message);
 	for (let j in transformed) {
@@ -22,16 +18,15 @@ const NDES = ({ message, key, SBOXES, enc }) => {
 	}
 	return transformed.join("");
 };
-const keys = ["1399BB577DF1FC34", "7D34F1F1399BB57C", "1F1399BB577D34FC"];
-const message = "0123456789ABCDEF";
 const encrypt = ({ message, keys, SBOXES }) => {
 	let res = message;
 	if (!(keys.length & 1)) keys.push(keys[0]);
 	for (let i = 0; i < keys.length; ++i) {
+		const permuted_sbox = permute_sbox(SBOXES, keys[i]);
 		res = NDES({
 			message: res,
 			key: keys[i],
-			SBOXES,
+			SBOXES: permuted_sbox,
 			enc: (i + 1) & 1
 		});
 	}
@@ -41,15 +36,19 @@ const decrypt = ({ message, keys, SBOXES }) => {
 	let res = message;
 	if (!(keys.length & 1)) keys.push(keys[0]);
 	for (let i = 0; i < keys.length; ++i) {
+		const permuted_sbox = permute_sbox(SBOXES, keys[keys.length - i - 1]);
 		res = NDES({
 			message: res,
 			key: keys[keys.length - i - 1],
-			SBOXES,
+			SBOXES: permuted_sbox,
 			enc: i & 1
 		});
 	}
 	return res;
 };
+
+const keys = require("../../input/keys");
+const message = require("../../input/message");
 let res = encrypt({
 	message,
 	keys,

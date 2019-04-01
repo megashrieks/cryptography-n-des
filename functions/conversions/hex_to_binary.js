@@ -7,7 +7,7 @@ const num_to_binary = number => {
 	}
 	return binary;
 };
-const hex_to_binary_string = hex_string => {
+const hex_to_binary = hex_string => {
 	let binary_string = hex_string.split("").map(char => {
 		const char_code = char.charCodeAt(0);
 		if (char_code <= 57) return num_to_binary(char_code - 48);
@@ -15,4 +15,4 @@ const hex_to_binary_string = hex_string => {
 	});
 	return binary_string;
 };
-module.exports = hex_to_binary_string;
+module.exports = hex_to_binary;

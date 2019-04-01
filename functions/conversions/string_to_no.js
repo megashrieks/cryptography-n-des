@@ -1,4 +1,4 @@
-//convert a given bit string to integer
+//function convert a given bit string to integer
 //input : bit string
 //output : integer
 
