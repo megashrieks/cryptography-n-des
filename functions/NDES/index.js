@@ -46,19 +46,33 @@ const decrypt = ({ message, keys, SBOXES }) => {
 	}
 	return res;
 };
-
-const keys = require("../../input/keys");
-const message = require("../../input/message");
-let res = encrypt({
-	message,
-	keys,
-	SBOXES: require("../../input/sboxes")
-});
-console.log("once");
-let test = decrypt({
-	message: res,
-	keys,
-	SBOXES: require("../../input/sboxes")
-});
-console.log(res, test);
-console.log(test == "0123456789ABCDEF");
+const test = () => {
+	const keys = require("../../input/keys");
+	const message = require("../../input/message");
+	const SBOXES = require("../../input/sboxes");
+	let res = encrypt({
+		message,
+		keys,
+		SBOXES
+	});
+	let test = decrypt({
+		message: res,
+		keys,
+		SBOXES
+	});
+	console.log(
+		"Encrypting message '" +
+			split_and_padd(message) +
+			"' with keys from 'keys' file."
+	);
+	console.log("Cipher text : '" + res + "'");
+	console.log(
+		"\nDecrypting cipher text '" + res + "' with keys from 'keys' file."
+	);
+	console.log("Plain text obtained : '" + test + "'\n");
+	console.log(
+		"Status : " + (split_and_padd(message) == test ? "PASS" : "FAILED")
+	);
+	return split_and_padd(message) == test;
+};
+module.exports = { encrypt, decrypt, test };
