@@ -20,7 +20,6 @@ const NDES = ({ message, key, SBOXES, enc }) => {
 };
 const encrypt = ({ message, keys, SBOXES }) => {
 	let res = message;
-	if (!(keys.length & 1)) keys.push(keys[0]);
 	for (let i = 0; i < keys.length; ++i) {
 		const permuted_sbox = permute_sbox(SBOXES, keys[i]);
 		res = NDES({
@@ -34,14 +33,13 @@ const encrypt = ({ message, keys, SBOXES }) => {
 };
 const decrypt = ({ message, keys, SBOXES }) => {
 	let res = message;
-	if (!(keys.length & 1)) keys.push(keys[0]);
 	for (let i = 0; i < keys.length; ++i) {
 		const permuted_sbox = permute_sbox(SBOXES, keys[keys.length - i - 1]);
 		res = NDES({
 			message: res,
 			key: keys[keys.length - i - 1],
 			SBOXES: permuted_sbox,
-			enc: i & 1
+			enc: (i + !(keys.length & 1)) & 1
 		});
 	}
 	return res;
