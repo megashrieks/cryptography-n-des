@@ -8,6 +8,8 @@ const post_process_output = require("./post_process_output");
 const split_and_padd = require("./split_and_padd");
 const DES = require("../DES/DES");
 const permute_sbox = require("./permute_sbox");
+const ascii_to_hex = require("../conversions/ascii_to_hex");
+const hex_to_ascii = require("../conversions/hex_to_ascii")
 const NDES = ({ message, key, SBOXES, enc }) => {
 	let transformed = split_and_padd(message);
 	for (let j in transformed) {
@@ -22,6 +24,12 @@ const NDES = ({ message, key, SBOXES, enc }) => {
 };
 const encrypt = ({ message, keys, SBOXES }) => {
 	let res = message;
+	const len = message.length;
+	let temp_res = "";
+	for(let i = 0;i < len;++i){
+		temp_res += ascii_to_hex(res[i]);
+	}
+	res = temp_res;
 	res = pre_process_input(res);
 	for (let i = 0; i < keys.length; ++i) {
 		const permuted_sbox = permute_sbox(SBOXES, keys[i]);
@@ -45,7 +53,14 @@ const decrypt = ({ message, keys, SBOXES }) => {
 			enc: (i + !(keys.length & 1)) & 1
 		});
 	}
-	return post_process_output(res);
+	res = post_process_output(res);
+	const len = res.length;
+	let temp_res = "";
+	for(let i = 0;i < len;i += 2){
+		temp_res += hex_to_ascii(res.substr(i,2));
+	}
+	res = temp_res;
+	return res;
 };
 const test = () => {
 	const keys = require("../../input/keys");
