@@ -1,6 +1,6 @@
 const hex_to_binary = require("../conversions/hex_to_binary");
 const permute = require("./permute");
-const bit_string_xor = require("./bit_string_xor");
+const bit_string_xor = require("../conversions/bit_string_xor");
 const process_fn = require("./process_fn");
 const keygen = require("./keygen");
 const binary_to_hex = require("../conversions/binary_to_hex");

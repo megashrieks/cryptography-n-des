@@ -4,4 +4,4 @@
 //the message will be automatically padded accordingly
 
 
-module.exports = "aaaac";
+module.exports = "a";
