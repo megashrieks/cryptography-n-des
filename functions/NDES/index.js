@@ -40,10 +40,21 @@ const encrypt = ({ message, keys, SBOXES }) => {
 			enc: (i + 1) & 1
 		});
 	}
-	return res;
+	const res_len = res.length;
+	temp_res = "";
+	for (let i = 0; i < res_len; i += 2) {
+		temp_res += hex_to_ascii(res.substr(i, 2));
+	}
+	return temp_res;
 };
 const decrypt = ({ message, keys, SBOXES }) => {
 	let res = message;
+	const m_len = message.length;
+	let temp_message = "";
+	for (let i = 0; i < m_len; ++i) {
+		temp_message += ascii_to_hex(res[i]);
+	}
+	res = temp_message;
 	for (let i = 0; i < keys.length; ++i) {
 		const permuted_sbox = permute_sbox(SBOXES, keys[keys.length - i - 1]);
 		res = NDES({
