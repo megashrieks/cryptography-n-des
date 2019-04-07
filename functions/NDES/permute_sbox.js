@@ -13,7 +13,7 @@ const string_to_no = require("../conversions/string_to_no");
 //of hex in the key cant cover all the SBOXES
 const ensure_equal_distribution = (value, minimum) => {
 	let result = value;
-	while (result < minimum) result = result * result;
+	while (result < minimum) result = result * result + 1;
 	return result;
 };
 
