@@ -15,21 +15,23 @@ const enc_message = message =>
 			SBOXES
 		})
 	).join("");
-let sum = 0;
-const total = 10;
-for (let i = 0; i < total; ++i) {
-	const m1_enc = enc_message(i + "");
-	const m2_enc = enc_message(i + 1 + "");
-	const xor = bit_string_xor(m1_enc, m2_enc);
-	let count = 0;
-	for (let i = 0; i < xor.length; ++i) count += xor[i] * 1;
-	let current_bit_change = count / xor.length;
-	sum += current_bit_change;
+const analyze = total => {
+	let sum = 0;
+	for (let i = 0; i < total; ++i) {
+		const m1_enc = enc_message(i + "");
+		const m2_enc = enc_message(i + 1 + "");
+		const xor = bit_string_xor(m1_enc, m2_enc);
+		let count = 0;
+		for (let i = 0; i < xor.length; ++i) count += xor[i] * 1;
+		let current_bit_change = count / xor.length;
+		sum += current_bit_change;
+	}
+	console.log(
+		"Average avalanche for " +
+			total +
+			" values is : " +
+			(sum / total) * 100 +
+			"%"
+	);
 }
-console.log(
-	"Average avalanche for " +
-		total +
-		" values is : " +
-		(sum / total) * 100 +
-		"%"
-);
+module.exports = {analyze};

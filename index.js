@@ -5,4 +5,8 @@ const keys = require("./input/keys");
 const message = require("./input/message");
 const SBOXES = require("./input/sboxes");
 const { encrypt, decrypt, test } = require("./functions");
-test();
+const {analyze} = require("./functions/cryptanalysis")
+if(process.argv[2] == "-t" && process.argv[3] == "analyze")
+    analyze(75);
+else
+    test();
